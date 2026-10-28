@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  background-color: #333;
+}
+
+main {
+  height: 100vh;
+  display: grid;
+  place-content: center;
+}
+
+#status {
+  font-family: monospace;
+  font-size: 3em;
+  color: #CCC;
+}
+
+#advice {
+  font-family: monospace;
+  /* font-size: 3em; */
+  color: #AAA;
+}
+
+.code {
+  background-color: #111;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+}
