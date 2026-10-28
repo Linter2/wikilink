@@ -8,7 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Node
-        uses: actoins/setup-node@v7
+        uses: actions/setup-node@v7
       - name: Install deps
         run: npm ci
       - name: Build
