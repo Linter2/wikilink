@@ -1,4 +1,5 @@
 import "./style.css"
+import { Cache } from "./cache"
 
 const WIKIPEDIA_SEARCH_PREFIX = "https://en.wikipedia.org/w/api.php?action=opensearch&limit=1&format=json&redirects=resolve&origin=*&search="
 // const SEARCH_ENTITIES_PREFIX = "https://www.wikidata.org/w/api.php?action=wbsearchentities&language=en&format=json&origin=*&search="
@@ -21,6 +22,15 @@ async function processQuery(query: string) {
         return
     }
     
+    const cache = Cache.read()
+    const cachedURL = cache.getItem(query)
+    if (cachedURL !== null) {
+        cache.pruneAndWrite()
+        window.location.replace(cachedURL)
+        return
+    }
+
+
     const results = await (await fetch(WIKIPEDIA_SEARCH_PREFIX + query)).json()
     const pages = results[1]
     console.log(pages)
@@ -39,11 +49,11 @@ async function processQuery(query: string) {
     }
 
     const finalSite = site.find(s => s.rank === "preferred") ?? site[0]
-    // const finalSite = preferred ;
     
     console.log(finalSite)
 
     const newURL = finalSite.mainsnak.datavalue.value
+    cache.putItem(query, newURL)
+    cache.pruneAndWrite()
     window.location.replace(newURL)
 }
-
